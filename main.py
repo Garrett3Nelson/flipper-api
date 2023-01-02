@@ -1,9 +1,9 @@
 from fastapi import Depends, FastAPI, HTTPException
-from .sql import crud, models, schemas
+# from sql import crud, models, schemas
 
 app = FastAPI()
 
 
 @app.get('/')
-async def home_page():
-    pass
+async def root():
+    return {"message": "Hello World"}
