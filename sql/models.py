@@ -9,7 +9,7 @@ class Items(Base):
     __tablename__ = "items"
 
     id = Column(Integer, primary_key=True, autoincrement=False)
-    name = Column(String(100))
+    name = Column(String(100), unique=True)
     market = Column(Integer)
     limit = Column(Integer)
     members = Column(Boolean)
