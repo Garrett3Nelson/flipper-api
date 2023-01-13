@@ -1,11 +1,33 @@
-from typing import Union
-
 from pydantic import BaseModel
+from datetime import datetime
+
+
+class CategoryBase(BaseModel):
+    name: str
+    item_id: int
+
+
+class CategoryCreate(CategoryBase):
+    pass
+
+
+class Category(CategoryBase):
+    id: int
+    created: datetime
+    updated: datetime
+
+    class Config:
+        orm_mode = True
 
 
 class ItemBase(BaseModel):
-    title: str
-    description: Union[str, None] = None
+    id: int
+    name: str
+    market: int
+    limit: int
+    members: bool
+    high_alch: int
+    low_alch: int
 
 
 class ItemCreate(ItemBase):
@@ -13,25 +35,10 @@ class ItemCreate(ItemBase):
 
 
 class Item(ItemBase):
-    id: int
-    owner_id: int
+    created: datetime
+    updated: datetime
 
-    class Config:
-        orm_mode = True
-
-
-class UserBase(BaseModel):
-    email: str
-
-
-class UserCreate(UserBase):
-    password: str
-
-
-class User(UserBase):
-    id: int
-    is_active: bool
-    items: list[Item] = []
+    categories: list[Category] = []
 
     class Config:
         orm_mode = True

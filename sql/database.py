@@ -1,14 +1,16 @@
-import databases
-import sqlalchemy
+import os
 
-# SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
-SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import sessionmaker, declarative_base
+from dotenv import load_dotenv
 
-database = databases.Database('postgresql+asyncpg://localhost/example', ssl=True, min_size=5, max_size=20)
+load_dotenv()
+DB_URL = os.environ['DB_URL']
 
-metadata = sqlalchemy.MetaData()
+engine = create_async_engine(DB_URL, echo=True, future=True)
+Base = declarative_base()
 
-engine = sqlalchemy.create_engine(
-    SQLALCHEMY_DATABASE_URL
-)
-
+async_session = sessionmaker(
+        engine, expire_on_commit=False, class_=AsyncSession
+    )
