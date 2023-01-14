@@ -20,6 +20,130 @@ class Category(CategoryBase):
         orm_mode = True
 
 
+class LatestBase(BaseModel):
+    item_id: int
+    low_price: int
+    high_price: int
+
+
+class LatestCreate(LatestBase):
+    pass
+
+
+class Latest(LatestBase):
+    id: int
+    created: datetime
+    updated: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class AverageBase(BaseModel):
+    item_id: int
+    low_price: int | None = 0
+    high_price: int | None = 0
+    low_volume: int | None = 0
+    high_volume: int | None = 0
+
+
+class AverageCreate(AverageBase):
+    pass
+
+
+class Average(AverageBase):
+    id: int
+    created: datetime
+    updated: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class DailyBase(BaseModel):
+    item_id: int
+    price: int
+    volume: int
+
+
+class DailyCreate(DailyBase):
+    pass
+
+
+class Daily(DailyBase):
+    id: int
+    created: datetime
+    updated: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class MaterialBase(BaseModel):
+    production_id: int
+    name: str
+    quantity: int
+
+
+class MaterialCreate(MaterialBase):
+    pass
+
+
+class Material(MaterialBase):
+    id: int
+    created: datetime
+    updated: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class SkillBase(BaseModel):
+    production_id: int
+    experience: float
+    level: int
+    name: str
+    boostable: bool
+
+
+class SkillCreate(SkillBase):
+    pass
+
+
+class Skill(SkillBase):
+    id: int
+    created: datetime
+    updated: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class ProductionBase(BaseModel):
+    item_id: int
+    ticks: int
+    facilities: str | None
+    members: str
+    cost: int
+    quantity: int
+
+
+class ProductionCreate(ProductionBase):
+    pass
+
+
+class Production(ProductionBase):
+    id: int
+    created: datetime
+    updated: datetime
+
+    materials: list[Material] = []
+    skills: list[Skill] = []
+
+    class Config:
+        orm_mode = True
+
+
 class ItemBase(BaseModel):
     id: int
     name: str
@@ -39,6 +163,11 @@ class Item(ItemBase):
     updated: datetime
 
     categories: list[Category] = []
+    latest: list[Latest] = []
+    average: list[Average] = []
+    daily: list[Daily] = []
+    production: list[Production] = []
+    materials: list[Material] = []
 
     class Config:
         orm_mode = True
