@@ -79,7 +79,7 @@ class TestDB:
         assert result.name == 'PyTest', 'Incorrect category name'
 
         async with db as session:
-            await crud.delete_item(session, result.id)
+            await crud.delete_category(session, result.id)
 
     async def test_get_item(self, db_session):
         db = db_session
@@ -96,3 +96,13 @@ class TestDB:
 
         assert isinstance(result, models.Category), "result is not a Category type"
         assert result.name == "Test", "Correct name was not returned in query"
+
+    async def test_get_category_by_item(self, db_session):
+        db = db_session
+        async with db as session:
+            result = await crud.get_category_by_item(session, item_id=2)
+
+        assert isinstance(result, list), "result is not a list type"
+
+        assert isinstance(result[0], models.Category), "result does not contain Category type"
+        assert result[0].name == 'Test', 'Incorrect category name'
