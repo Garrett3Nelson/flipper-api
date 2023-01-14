@@ -89,6 +89,21 @@ class TestDB:
         assert isinstance(result, models.Items), "result is not an Item type"
         assert result.id == 2, "Correct ID was not returned in query"
 
+    async def test_update_item(self, db_session):
+        item = schemas.ItemCreate(id=2, name="Cannonball", market=1, limit=5000, members=True, high_alch=10, low_alch=5)
+        db = db_session
+
+        async with db as session:
+            await crud.update_item(session, item)
+            result = await crud.get_item(session, item_id=2)
+
+        assert isinstance(result, models.Items), "result is not an Item type"
+        assert result.market == 1, "Correct market was not returned in query"
+
+        item = schemas.ItemCreate(id=2, name="Cannonball", market=1000, limit=5000, members=True, high_alch=10, low_alch=5)
+        async with db as session:
+            await crud.update_item(session, item)
+
     async def test_get_category(self, db_session):
         db = db_session
         async with db as session:
