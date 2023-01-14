@@ -41,7 +41,7 @@ class TestDB:
             await crud.create_item(session, item)
 
     async def test_create_item(self, db_session):
-        item = schemas.ItemCreate(id=1, name="Cannonball", market=1000, limit=5000, members=True, high_alch=10, low_alch=5)
+        item = schemas.ItemCreate(id=1, name="Test Cannonball", market=1000, limit=5000, members=True, high_alch=10, low_alch=5)
         db = db_session
 
         async with db as session:
