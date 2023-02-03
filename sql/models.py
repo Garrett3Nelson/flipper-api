@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Float, Date
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -96,6 +96,7 @@ class Daily(Base):
     item_id = Column(Integer, ForeignKey('items.id'))
     price = Column(Integer, nullable=False)
     volume = Column(Integer, nullable=False)
+    date_stamp = Column(Date, nullable=False, default=datetime.date.today(), unique=True)
     created = Column(DateTime, nullable=False, default=datetime.datetime.utcnow())
     updated = Column(DateTime, nullable=False, default=datetime.datetime.utcnow(), onupdate=datetime.datetime.utcnow())
 

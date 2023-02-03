@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, date
 
 
 class CategoryBase(BaseModel):
@@ -72,6 +72,7 @@ class DailyCreate(DailyBase):
 
 class Daily(DailyBase):
     id: int
+    date_stamp: date
     created: datetime
     updated: datetime
 
