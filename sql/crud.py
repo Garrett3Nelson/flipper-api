@@ -71,7 +71,7 @@ async def get_latest(db: AsyncSession, latest_id: int) -> schemas.Latest:
     return result
 
 
-async def get_latest_by_item(db: AsyncSession, item_id: int) -> schemas.Latest:
+async def get_latest_by_item(db: AsyncSession, item_id: int) -> list[schemas.Latest]:
     stmt = select(models.Items).filter(models.Items.id == item_id).options(selectinload(models.Items.latest))
     result = await db.execute(stmt)
     return result.scalars().first().latest
@@ -98,7 +98,7 @@ async def get_average(db: AsyncSession, average_id: int) -> schemas.Average:
     return result
 
 
-async def get_average_by_item(db: AsyncSession, item_id: int) -> schemas.Average:
+async def get_average_by_item(db: AsyncSession, item_id: int) -> list[schemas.Average]:
     stmt = select(models.Items).filter(models.Items.id == item_id).options(selectinload(models.Items.average))
     result = await db.execute(stmt)
     return result.scalars().first().average
@@ -125,7 +125,7 @@ async def get_daily(db: AsyncSession, daily_id: int) -> schemas.Daily:
     return result
 
 
-async def get_daily_by_item(db: AsyncSession, item_id: int) -> schemas.Daily:
+async def get_daily_by_item(db: AsyncSession, item_id: int) -> list[schemas.Daily]:
     stmt = select(models.Items).filter(models.Items.id == item_id).options(selectinload(models.Items.daily))
     result = await db.execute(stmt)
     return result.scalars().first().daily
@@ -139,8 +139,8 @@ async def delete_daily(db: AsyncSession, daily_id: int) -> None:
         await db.commit()
 
 
-async def create_production(db: AsyncSession, latest: schemas.ProductionCreate) -> schemas.Production:
-    db_add = models.Production(**latest.dict())
+async def create_production(db: AsyncSession, prod: schemas.ProductionCreate) -> schemas.Production:
+    db_add = models.Production(**prod.dict())
     db.add(db_add)
     await db.commit()
     await db.refresh(db_add)
@@ -160,7 +160,7 @@ async def get_production(db: AsyncSession, production_id: int) -> schemas.Produc
     return result
 
 
-async def get_production_by_item(db: AsyncSession, item_id: int) -> schemas.Production:
+async def get_production_by_item(db: AsyncSession, item_id: int) -> list[schemas.Production]:
     stmt = select(models.Items).filter(models.Items.id == item_id).options(selectinload(models.Items.production))
     result = await db.execute(stmt)
     return result.scalars().first().production
@@ -174,8 +174,8 @@ async def delete_production(db: AsyncSession, production_id: int) -> None:
         await db.commit()
 
 
-async def create_skill(db: AsyncSession, latest: schemas.SkillCreate) -> schemas.Skill:
-    db_add = models.Skill(**latest.dict())
+async def create_skill(db: AsyncSession, skill: schemas.SkillCreate) -> schemas.Skill:
+    db_add = models.Skill(**skill.dict())
     db.add(db_add)
     await db.commit()
     await db.refresh(db_add)
@@ -187,7 +187,7 @@ async def get_skill(db: AsyncSession, skill_id: int) -> schemas.Skill:
     return result
 
 
-async def get_skill_by_production(db: AsyncSession, production_id: int) -> schemas.Skill:
+async def get_skill_by_production(db: AsyncSession, production_id: int) -> schemas.Skill | list[schemas.Skill]:
     stmt = select(models.Production).filter(models.Production.id == production_id).options(selectinload(
         models.Production.skills))
     result = await db.execute(stmt)
@@ -202,8 +202,8 @@ async def delete_skill(db: AsyncSession, skill_id: int) -> None:
         await db.commit()
 
 
-async def create_material(db: AsyncSession, latest: schemas.MaterialCreate) -> schemas.Material:
-    db_add = models.Material(**latest.dict())
+async def create_material(db: AsyncSession, material: schemas.MaterialCreate) -> schemas.Material:
+    db_add = models.Material(**material.dict())
     db.add(db_add)
     await db.commit()
     await db.refresh(db_add)

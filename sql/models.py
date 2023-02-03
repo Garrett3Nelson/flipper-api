@@ -115,7 +115,7 @@ class Production(Base):
     item_id = Column(Integer, ForeignKey('items.id'))
     ticks = Column(Integer, nullable=False)
     facilities = Column(String, nullable=False)
-    members = Column(Boolean, nullable=False)
+    members = Column(String, nullable=False)
     cost = Column(Integer, nullable=False)
     quantity = Column(Integer, nullable=False)
 

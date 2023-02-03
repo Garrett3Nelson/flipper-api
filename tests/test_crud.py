@@ -185,3 +185,108 @@ class TestDB:
         assert isinstance(result[0], models.Latest), "result[0] is not a Latest type"
         assert result[0].item_id == 1, 'Result has the incorrect item ID'
         assert result[0].low_price == 1, 'Result does not have correct price'
+
+    async def test_add_production(self, db_session):
+        db = db_session
+        prod = schemas.ProductionCreate(item_id=1, ticks=2, facilities='Furnace', members='T', cost=1, quantity=1)
+
+        async with db as session:
+            result = await crud.create_production(session, prod)
+
+        assert isinstance(result, models.Production), "Result is not Production type"
+        assert result.item_id == 1, "Result has incorrect item ID"
+        assert result.ticks == 2, "Result does not have correct ticks"
+
+    async def test_add_skill(self, db_session):
+        db = db_session
+        skill = schemas.SkillCreate(production_id=1, experience=5, level=10, name='Smithing', boostable=False)
+
+        async with db as session:
+            result = await crud.create_skill(session, skill)
+
+        assert isinstance(result, models.Skill), "Result is not Skill type"
+        assert result.production_id == 1, "Result has incorrect production ID"
+        assert result.name == "Smithing", "Result does not have correct name"
+
+    async def test_add_material(self, db_session):
+        db = db_session
+        material = schemas.MaterialCreate(production_id=1, name="Cannonball", quantity=1)
+
+        async with db as session:
+            result = await crud.create_material(session, material)
+
+        assert isinstance(result, models.Material), "Result is not Material type"
+        assert result.production_id == 1, "Result has incorrect production ID"
+        assert result.name == "Cannonball", "Result does not have correct name"
+
+    async def test_get_production(self, db_session):
+        db = db_session
+
+        async with db as session:
+            result = await crud.get_production(session, production_id=1)
+
+        assert isinstance(result, models.Production), "Result is not Production type"
+        assert result.item_id == 1, "Result has incorrect item ID"
+        assert result.ticks == 2, "Result does not have correct ticks"
+
+    async def test_get_production_by_item(self, db_session):
+        db = db_session
+
+        async with db as session:
+            result = await crud.get_production_by_item(session, item_id=1)
+
+        assert isinstance(result[0], models.Production), "Result is not Production type"
+        assert result[0].item_id == 1, "Result has incorrect item ID"
+        assert result[0].ticks == 2, "Result does not have correct ticks"
+
+    async def test_get_skill(self, db_session):
+        db = db_session
+
+        async with db as session:
+            result = await crud.get_skill(session, skill_id=1)
+
+        assert isinstance(result, models.Skill), "Result is not Skill type"
+        assert result.production_id == 1, "Result has incorrect production ID"
+        assert result.name == "Smithing", "Result does not have correct name"
+
+    async def test_get_material(self, db_session):
+        db = db_session
+
+        async with db as session:
+            result = await crud.get_material(session, material_id=1)
+
+        assert isinstance(result, models.Material), "Result is not Material type"
+        assert result.production_id == 1, "Result has incorrect production ID"
+        assert result.name == "Cannonball", "Result does not have correct name"
+
+    async def test_get_skill_by_production(self, db_session):
+        db = db_session
+
+        async with db as session:
+            result = await crud.get_skill_by_production(session, production_id=1)
+
+        assert isinstance(result[0], models.Skill), "Result is not Skill type"
+        assert result[0].production_id == 1, "Result has incorrect production ID"
+        assert result[0].name == "Smithing", "Result does not have correct name"
+
+    async def test_get_material_by_production(self, db_session):
+        db = db_session
+
+        async with db as session:
+            result = await crud.get_material_by_production(session, production_id=1)
+
+        assert isinstance(result[0], models.Material), "Result is not Material type"
+        assert result[0].production_id == 1, "Result has incorrect production ID"
+        assert result[0].name == "Cannonball", "Result does not have correct name"
+
+    async def test_get_prod_full(self, db_session):
+        db = db_session
+
+        async with db as session:
+            result = await crud.get_production_full(session, production_id=1)
+
+        assert isinstance(result, models.Production), "Result is not Production type"
+        assert result.item_id == 1, "Result has incorrect item ID"
+        assert result.ticks == 2, "Result does not have correct ticks"
+        assert result.materials[0].name == 'Cannonball', "Result does not have correct material name"
+        assert result.skills[0].name == 'Smithing', "Result does not have correct skill name"
