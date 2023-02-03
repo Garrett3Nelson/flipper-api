@@ -134,7 +134,7 @@ class Production(Base):
 
 
 class Material(Base):
-    __tablename__ = "materials"
+    __tablename__ = "material"
 
     id = Column(Integer, primary_key=True)
     production_id = Column(Integer, ForeignKey('production.id'))
