@@ -69,7 +69,7 @@ class TestDB:
         assert result.id == 1, "Correct ID was not returned in query"
 
     async def test_update_item(self, db_session):
-        item = schemas.ItemCreate(id=1, name="Cannonball", market=1, limit=5000, members=True, high_alch=10, low_alch=5)
+        item = schemas.ItemCreate(id=1, name="Test Cannonball", market=1, limit=5000, members=True, high_alch=10, low_alch=5)
         db = db_session
 
         async with db as session:
@@ -210,14 +210,14 @@ class TestDB:
 
     async def test_add_material(self, db_session):
         db = db_session
-        material = schemas.MaterialCreate(production_id=1, name="Cannonball", quantity=1)
+        material = schemas.MaterialCreate(production_id=1, name="Test Cannonball", quantity=1)
 
         async with db as session:
             result = await crud.create_material(session, material)
 
         assert isinstance(result, models.Material), "Result is not Material type"
         assert result.production_id == 1, "Result has incorrect production ID"
-        assert result.name == "Cannonball", "Result does not have correct name"
+        assert result.name == "Test Cannonball", "Result does not have correct name"
 
     async def test_get_production(self, db_session):
         db = db_session
@@ -257,7 +257,7 @@ class TestDB:
 
         assert isinstance(result, models.Material), "Result is not Material type"
         assert result.production_id == 1, "Result has incorrect production ID"
-        assert result.name == "Cannonball", "Result does not have correct name"
+        assert result.name == "Test Cannonball", "Result does not have correct name"
 
     async def test_get_skill_by_production(self, db_session):
         db = db_session
@@ -277,7 +277,7 @@ class TestDB:
 
         assert isinstance(result[0], models.Material), "Result is not Material type"
         assert result[0].production_id == 1, "Result has incorrect production ID"
-        assert result[0].name == "Cannonball", "Result does not have correct name"
+        assert result[0].name == "Test Cannonball", "Result does not have correct name"
 
     async def test_get_prod_full(self, db_session):
         db = db_session
@@ -288,5 +288,5 @@ class TestDB:
         assert isinstance(result, models.Production), "Result is not Production type"
         assert result.item_id == 1, "Result has incorrect item ID"
         assert result.ticks == 2, "Result does not have correct ticks"
-        assert result.materials[0].name == 'Cannonball', "Result does not have correct material name"
+        assert result.materials[0].name == 'Test Cannonball', "Result does not have correct material name"
         assert result.skills[0].name == 'Smithing', "Result does not have correct skill name"
