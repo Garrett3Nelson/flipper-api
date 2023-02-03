@@ -139,16 +139,14 @@ class TestDB:
         assert result.low_price == 1, 'Result does not have correct low price'
 
     async def test_get_average_by_item(self, db_session):
-        db_add = schemas.AverageCreate(item_id=1, low_price=5, high_price=15, low_volume=15, high_volume=35)
         db = db_session
         async with db as session:
-            await crud.create_average(session, db_add)
-            result = crud.get_average_by_item(session, item_id=1)
+            result = await crud.get_average_by_item(session, item_id=1)
 
         assert isinstance(result, list), "result is not a list type"
         assert isinstance(result[0], models.Average), "result[0] is not a Average type"
         assert result[0].item_id == 1, 'Result has the incorrect item ID'
-        assert result[0].low_price == 5, 'Result does not have correct low price'
+        assert result[0].low_price == 1, 'Result does not have correct low price'
 
     async def test_get_daily(self, db_session):
         db = db_session
