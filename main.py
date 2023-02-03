@@ -32,5 +32,4 @@ async def root():
 @app.get('/item/', response_model=schemas.Item)
 async def read_items():
     async with async_session() as session:
-        async with session.begin():
-            return crud.get_item(session, item_id=1)
+        return await crud.get_item(session, item_id=1)
