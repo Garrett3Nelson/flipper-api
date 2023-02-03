@@ -26,4 +26,11 @@ app = FastAPI()
 
 @app.get('/')
 async def root():
-    return {"message": "Test Reload - Hello World"}
+    return {"message": "Hello World"}
+
+
+@app.get('/item/', response_model=schemas.Item)
+async def read_items():
+    async with async_session() as session:
+        async with session.begin():
+            return crud.get_item(session, item_id=1)
