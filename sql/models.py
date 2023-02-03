@@ -149,7 +149,7 @@ class Material(Base):
     __mapper_args__ = {"eager_defaults": True}
 
     def __repr__(self):
-        return f"Average(id={self.id}, item={self.item_id}, price={self.price}, volume={self.volume})"
+        return f"Material(id={self.id}, name={self.name}, production_id={self.production_id})"
 
 
 class Skill(Base):
@@ -169,4 +169,5 @@ class Skill(Base):
     __mapper_args__ = {"eager_defaults": True}
 
     def __repr__(self):
-        return f"Average(id={self.id}, item={self.item_id}, price={self.price}, volume={self.volume})"
+        return f"Skill(id={self.id}, name={self.name}, level={self.level}, experience={self.experience}, " \
+               f"production_id={self.production_id})"
