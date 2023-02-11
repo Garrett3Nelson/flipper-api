@@ -18,6 +18,34 @@ async def get_item(db: AsyncSession, item_id: int) -> schemas.Item:
     return result
 
 
+# Write get_items() to pull all items, with limit and filters
+async def get_items(db: AsyncSession, limit: int = 100) -> list[schemas.Item]:
+    stmt = select(models.Items).limit(limit)
+    result = await db.execute(stmt)
+    return result.scalars().all()
+
+
+# Write functions to get full items (with all loaded relationships)
+async def get_items_full(db: AsyncSession, limit: int = 100) -> list[schemas.ItemFull]:
+    stmt = select(models.Items).limit(limit).options(
+        selectinload(models.Items.categories), selectinload(models.Items.latest),
+        selectinload(models.Items.average), selectinload(models.Items.daily),
+        selectinload(models.Items.production), selectinload(models.Items.materials)
+    )
+    result = await db.execute(stmt)
+    return result.scalars().all()
+
+
+async def get_item_full(db: AsyncSession, item_id) -> schemas.ItemFull:
+    stmt = select(models.Items).filter(models.Items.id == item_id).options(
+        selectinload(models.Items.categories), selectinload(models.Items.latest),
+        selectinload(models.Items.average), selectinload(models.Items.daily),
+        selectinload(models.Items.production), selectinload(models.Items.materials)
+    )
+    result = await db.execute(stmt)
+    return result.scalars().first()
+
+
 async def update_item(db: AsyncSession, item: schemas.ItemCreate) -> None:
     stmt = update(models.Items).where(models.Items.id == item.id).values(**item.dict())
     await db.execute(stmt)
