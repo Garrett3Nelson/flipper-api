@@ -68,6 +68,15 @@ class TestDB:
         assert isinstance(result, models.Items), "result is not an Item type"
         assert result.id == 1, "Correct ID was not returned in query"
 
+    async def test_get_item_full(self, db_session):
+        db = db_session
+        async with db as session:
+            result = await crud.get_item_full(session, item_id=1)
+
+        assert isinstance(result, models.Items), "result is not an Item type"
+        assert result.id == 1, "Correct ID was not returned in query"
+        assert result.categories[0].name == "PyTest"
+
     async def test_get_items(self, db_session):
         db = db_session
         async with db as session:
