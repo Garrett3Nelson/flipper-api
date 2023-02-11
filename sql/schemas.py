@@ -138,11 +138,13 @@ class Production(ProductionBase):
     created: datetime
     updated: datetime
 
-    materials: list[Material] = []
-    skills: list[Skill] = []
-
     class Config:
         orm_mode = True
+
+
+class ProductionFull(Production):
+    materials: list[Material] = []
+    skills: list[Skill] = []
 
 
 class ItemBase(BaseModel):
@@ -167,16 +169,10 @@ class Item(ItemBase):
         orm_mode = True
 
 
-class ItemFull(ItemBase):
-    created: datetime
-    updated: datetime
-
+class ItemFull(Item):
     categories: list[Category] = []
     latest: list[Latest] = []
     average: list[Average] = []
     daily: list[Daily] = []
     production: list[Production] = []
     materials: list[Material] = []
-
-    class Config:
-        orm_mode = True
