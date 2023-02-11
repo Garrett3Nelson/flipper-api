@@ -41,10 +41,11 @@ class Latest(LatestBase):
 
 class AverageBase(BaseModel):
     item_id: int
-    low_price: int | None = 0
-    high_price: int | None = 0
-    low_volume: int | None = 0
-    high_volume: int | None = 0
+    low_price: int
+    high_price: int
+    low_volume: int
+    high_volume: int
+    time_stamp: datetime
 
 
 class AverageCreate(AverageBase):

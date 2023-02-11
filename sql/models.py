@@ -77,6 +77,7 @@ class Average(Base):
     high_price = Column(Integer, nullable=False)
     low_volume = Column(Integer, nullable=False)
     high_volume = Column(Integer, nullable=False)
+    time_stamp = Column(DateTime, nullable=False, unique=True)
     created = Column(DateTime, nullable=False, default=datetime.datetime.utcnow())
     updated = Column(DateTime, nullable=False, default=datetime.datetime.utcnow(), onupdate=datetime.datetime.utcnow())
 

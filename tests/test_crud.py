@@ -1,3 +1,5 @@
+import datetime
+
 import pytest
 import pytest_asyncio
 import asyncio
@@ -107,7 +109,8 @@ class TestDB:
         assert result[0].name == 'PyTest', 'Incorrect category name'
 
     async def test_create_average(self, db_session):
-        db_add = schemas.AverageCreate(item_id=1, low_price=1, high_price=10, low_volume=10, high_volume=25)
+        db_add = schemas.AverageCreate(item_id=1, low_price=1, high_price=10, low_volume=10, high_volume=25,
+                                       time_stamp=datetime.datetime.utcnow())
         db = db_session
         async with db as session:
             result = await crud.create_average(session, db_add)
