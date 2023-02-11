@@ -47,13 +47,13 @@ async def read_item(item_id: int):
         return await crud.get_item(session, item_id=item_id)
 
 
-@app.get('/items/full/', response_model=list[schemas.Item])
+@app.get('/items/full/', response_model=list[schemas.ItemFull])
 async def read_items_full(limit: int = 100):
     async with async_session() as session:
         return await crud.get_items_full(session, limit=limit)
 
 
-@app.get('/items/full/{item_id}/', response_model=schemas.Item)
+@app.get('/items/full/{item_id}/', response_model=schemas.ItemFull)
 async def read_item_full(item_id: int):
     async with async_session() as session:
         return await crud.get_item_full(session, item_id=item_id)
