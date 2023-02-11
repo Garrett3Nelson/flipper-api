@@ -30,9 +30,9 @@ async def root():
 
 
 @app.get('/items/full/', response_model=list[schemas.ItemFull])
-async def read_items_full():
+async def read_items_full(limit: int = 100):
     async with async_session() as session:
-        return await crud.get_items_full(session)
+        return await crud.get_items_full(session, limit=limit)
 
 
 @app.get('/items/full/{item_id}/', response_model=schemas.ItemFull)
