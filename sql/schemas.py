@@ -163,6 +163,9 @@ class Item(ItemBase):
     created: datetime
     updated: datetime
 
+    class Config:
+        orm_mode = True
+
 
 class ItemFull(ItemBase):
     created: datetime
@@ -174,3 +177,6 @@ class ItemFull(ItemBase):
     daily: list[Daily] = []
     production: list[Production] = []
     materials: list[Material] = []
+
+    class Config:
+        orm_mode = True
