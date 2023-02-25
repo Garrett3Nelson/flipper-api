@@ -24,6 +24,7 @@ class LatestBase(BaseModel):
     item_id: int
     low_price: int
     high_price: int
+    time_stamp: datetime
 
 
 class LatestCreate(LatestBase):

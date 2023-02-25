@@ -57,6 +57,7 @@ class Latest(Base):
     item_id = Column(Integer, ForeignKey('items.id'))
     low_price = Column(Integer, nullable=False)
     high_price = Column(Integer, nullable=False)
+    time_stamp = Column(DateTime, nullable=False, unique=True)
     created = Column(DateTime, nullable=False, default=datetime.datetime.utcnow())
     updated = Column(DateTime, nullable=False, default=datetime.datetime.utcnow(), onupdate=datetime.datetime.utcnow())
 
@@ -65,7 +66,8 @@ class Latest(Base):
     __mapper_args__ = {"eager_defaults": True}
 
     def __repr__(self):
-        return f"Latest(id={self.id}, item={self.item_id}, low_price={self.low_price}, high_price={self.high_price})"
+        return f"Latest(id={self.id}, time={self.time_stamp}, item={self.item_id}, low_price={self.low_price}" \
+               f", high_price={self.high_price})"
 
 
 class Average(Base):
@@ -86,8 +88,8 @@ class Average(Base):
     __mapper_args__ = {"eager_defaults": True}
 
     def __repr__(self):
-        return f"Average(id={self.id}, item={self.item_id}, low_price={self.low_price}, high_price={self.high_price}" \
-               f", low_volume={self.low_volume}, high_volume={self.high_volume})"
+        return f"Average(id={self.id}, time={self.time_stamp}, item={self.item_id}, low_price={self.low_price}" \
+               f", high_price={self.high_price}, low_volume={self.low_volume}, high_volume={self.high_volume})"
 
 
 class Daily(Base):
@@ -106,7 +108,7 @@ class Daily(Base):
     __mapper_args__ = {"eager_defaults": True}
 
     def __repr__(self):
-        return f"Daily(id={self.id}, item={self.item_id}, price={self.price}, volume={self.volume})"
+        return f"Daily(id={self.id}, date={self.date_stamp}, item={self.item_id}, price={self.price}, volume={self.volume})"
 
 
 class Production(Base):
