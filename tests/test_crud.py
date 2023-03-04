@@ -110,7 +110,7 @@ class TestDB:
 
     async def test_create_average(self, db_session):
         db_add = schemas.AverageCreate(item_id=1, low_price=1, high_price=10, low_volume=10, high_volume=25,
-                                       time_stamp=datetime.datetime.utcnow())
+                                       time_stamp=datetime.datetime.utcnow().timestamp())
         db = db_session
         async with db as session:
             result = await crud.create_average(session, db_add)
@@ -134,7 +134,8 @@ class TestDB:
             result = await crud.create_daily(session, db_add)
 
     async def test_create_latest(self, db_session):
-        db_add = schemas.LatestCreate(item_id=1, low_price=1, high_price=10)
+        db_add = schemas.LatestCreate(item_id=1, low_price=1, high_price=10,
+                                      time_stamp=datetime.datetime.utcnow().timestamp())
         db = db_session
         async with db as session:
             result = await crud.create_latest(session, db_add)

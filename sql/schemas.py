@@ -24,15 +24,15 @@ class LatestBase(BaseModel):
     item_id: int
     low_price: int
     high_price: int
-    time_stamp: datetime
 
 
 class LatestCreate(LatestBase):
-    pass
+    time_stamp: float
 
 
 class Latest(LatestBase):
     id: int
+    time_stamp: datetime
     created: datetime
     updated: datetime
 
@@ -46,15 +46,15 @@ class AverageBase(BaseModel):
     high_price: int
     low_volume: int
     high_volume: int
-    time_stamp: datetime
 
 
 class AverageCreate(AverageBase):
-    pass
+    time_stamp: float
 
 
 class Average(AverageBase):
     id: int
+    time_stamp: datetime
     created: datetime
     updated: datetime
 
@@ -69,7 +69,7 @@ class DailyBase(BaseModel):
 
 
 class DailyCreate(DailyBase):
-    pass
+    date_stamp: date | None
 
 
 class Daily(DailyBase):

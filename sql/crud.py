@@ -4,6 +4,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update
 
 from . import models, schemas
+from datetime import datetime
+
+
+async def round_to_nearest(timestamp, timestep):
+    dt = datetime.utcfromtimestamp(timestamp)
+    rounded_minute = (dt.minute // timestep) * timestep
+    dt_rounded = dt.replace(minute=rounded_minute, second=0, microsecond=0)
+
+    return dt_rounded
 
 
 async def create_item(db: AsyncSession, item: schemas.ItemCreate) -> models.Items:
@@ -87,6 +96,7 @@ async def delete_category(db: AsyncSession, cat_id: int) -> None:
 
 
 async def create_latest(db: AsyncSession, latest: schemas.LatestCreate) -> models.Latest:
+    latest.time_stamp = await round_to_nearest(latest.time_stamp, 1)
     db_add = models.Latest(**latest.dict())
     db.add(db_add)
     await db.commit()
@@ -114,6 +124,7 @@ async def delete_latest(db: AsyncSession, latest_id: int) -> None:
 
 
 async def create_average(db: AsyncSession, average: schemas.AverageCreate) -> models.Average:
+    average.time_stamp = await round_to_nearest(average.time_stamp, 1)
     db_add = models.Average(**average.dict())
     db.add(db_add)
     await db.commit()
