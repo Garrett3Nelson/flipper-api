@@ -29,6 +29,24 @@ async def root():
     return {"message": "Hello World"}
 
 
+@app.post('/latest/', response_model=schemas.Latest)
+async def create_latest(latest: schemas.LatestCreate):
+    async with async_session() as session:
+        return await crud.create_latest(session, latest=latest)
+
+
+@app.get('/latest/', response_model=list[schemas.Latest])
+async def read_latest(limit: int = 100):
+    async with async_session() as session:
+        return await crud.get_latest_all(session, limit=limit)
+
+
+@app.get('/latest/{item_id}/', response_model=schemas.Latest)
+async def read_latest_by_item(item_id: int):
+    async with async_session() as session:
+        return await crud.get_latest_by_item(session, item_id=item_id)
+
+
 @app.get('/items/full/', response_model=list[schemas.ItemFull])
 async def read_items_full(limit: int = 100):
     async with async_session() as session:
