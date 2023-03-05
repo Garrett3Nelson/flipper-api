@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Float, Date
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Float, Date, UniqueConstraint
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -52,12 +52,13 @@ class Category(Base):
 
 class Latest(Base):
     __tablename__ = "latest"
+    __table_args__ = (UniqueConstraint('item_id', 'time_stamp'),)
 
     id = Column(Integer, primary_key=True)
     item_id = Column(Integer, ForeignKey('items.id'))
     low_price = Column(Integer, nullable=False)
     high_price = Column(Integer, nullable=False)
-    time_stamp = Column(DateTime, nullable=False, unique=True)
+    time_stamp = Column(DateTime, nullable=False)
     created = Column(DateTime, nullable=False, default=datetime.datetime.utcnow())
     updated = Column(DateTime, nullable=False, default=datetime.datetime.utcnow(), onupdate=datetime.datetime.utcnow())
 
@@ -72,6 +73,7 @@ class Latest(Base):
 
 class Average(Base):
     __tablename__ = "average"
+    __table_args__ = (UniqueConstraint('item_id', 'time_stamp'),)
 
     id = Column(Integer, primary_key=True)
     item_id = Column(Integer, ForeignKey('items.id'))
@@ -79,7 +81,7 @@ class Average(Base):
     high_price = Column(Integer, nullable=False)
     low_volume = Column(Integer, nullable=False)
     high_volume = Column(Integer, nullable=False)
-    time_stamp = Column(DateTime, nullable=False, unique=True)
+    time_stamp = Column(DateTime, nullable=False)
     created = Column(DateTime, nullable=False, default=datetime.datetime.utcnow())
     updated = Column(DateTime, nullable=False, default=datetime.datetime.utcnow(), onupdate=datetime.datetime.utcnow())
 
@@ -94,12 +96,13 @@ class Average(Base):
 
 class Daily(Base):
     __tablename__ = "daily"
+    __table_args__ = (UniqueConstraint('item_id', 'date_stamp'),)
 
     id = Column(Integer, primary_key=True)
     item_id = Column(Integer, ForeignKey('items.id'))
     price = Column(Integer, nullable=False)
     volume = Column(Integer, nullable=False)
-    date_stamp = Column(Date, nullable=False, default=datetime.date.today(), unique=True)
+    date_stamp = Column(Date, nullable=False, default=datetime.date.today())
     created = Column(DateTime, nullable=False, default=datetime.datetime.utcnow())
     updated = Column(DateTime, nullable=False, default=datetime.datetime.utcnow(), onupdate=datetime.datetime.utcnow())
 
