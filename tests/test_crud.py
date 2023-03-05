@@ -80,7 +80,8 @@ class TestDB:
         assert result.categories[0].name == "PyTest"
 
     async def test_update_item(self, db_session):
-        item = schemas.ItemCreate(id=1, name="Test Cannonball", market=1, limit=5000, members=True, high_alch=10, low_alch=5)
+        item = schemas.ItemCreate(id=1, name="Test Cannonball", market=1, limit=5000, members=True, high_alch=10,
+                                  low_alch=5)
         db = db_session
 
         async with db as session:
@@ -188,6 +189,22 @@ class TestDB:
         assert isinstance(result, models.Latest), "result is not a Latest type"
         assert result.item_id == 1, 'Result has the incorrect item ID'
         assert result.low_price == 1, 'Result does not have correct price'
+
+    async def test_get_latest_all(self, db_session):
+        db_add = schemas.LatestCreate(item_id=0, low_price=1, high_price=10,
+                                      time_stamp=datetime.datetime.utcnow().timestamp())
+        db = db_session
+        async with db as session:
+            await crud.create_latest(session, db_add)
+            result = await crud.get_latest_all(session)
+
+        assert isinstance(result, list), "result is not a list type"
+        assert isinstance(result[0], models.Latest), "result[0] is not a Latest type"
+        assert result[0].item_id == 0, 'Result has the incorrect item ID'
+        assert result[0].low_price == 1, 'Result does not have correct price'
+
+        async with db as session:
+            await crud.delete_latest(session, result[0].id)
 
     async def test_get_latest_by_item(self, db_session):
         db = db_session

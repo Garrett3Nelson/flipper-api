@@ -109,7 +109,13 @@ async def get_latest(db: AsyncSession, latest_id: int) -> models.Latest:
     return result
 
 
-async def get_latest_by_item(db: AsyncSession, item_id: int) -> list[schemas.Latest]:
+async def get_latest_all(db: AsyncSession, limit: int = 100) -> list[models.Latest]:
+    stmt = select(models.Latest).order_by(models.Latest.time_stamp.desc()).group_by(models.Latest.item_id).limit(limit)
+    result = await db.execute(stmt)
+    return result.scalars().all()
+
+
+async def get_latest_by_item(db: AsyncSession, item_id: int) -> list[models.Latest]:
     stmt = select(models.Items).filter(models.Items.id == item_id).options(selectinload(models.Items.latest))
     result = await db.execute(stmt)
     return result.scalars().first().latest
