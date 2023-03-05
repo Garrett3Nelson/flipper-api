@@ -205,11 +205,11 @@ class TestDB:
 
         assert isinstance(result, list), "result is not a list type"
         assert isinstance(result[0], models.Latest), "result[0] is not a Latest type"
-        assert result[0].item_id == 0, 'Result has the incorrect item ID'
-        assert result[0].low_price == 1, 'Result does not have correct price'
+        assert result[1].item_id == 0, 'Result has the incorrect item ID'
+        assert result[1].low_price == 1, 'Result does not have correct price'
 
         async with db as session:
-            await crud.delete_latest(session, result[0].id)
+            await crud.delete_latest(session, result[1].id)
 
     async def test_get_latest_by_item(self, db_session):
         db = db_session
