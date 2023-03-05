@@ -35,11 +35,15 @@ async def db_session():
 @pytest.mark.asyncio
 class TestDB:
     async def test_create_item(self, db_session):
-        item = schemas.ItemCreate(id=1, name="Test Cannonball", market=1000, limit=5000, members=True, high_alch=10, low_alch=5)
+        item = schemas.ItemCreate(id=1, name="Test Cannonball", market=1000, limit=5000, members=True, high_alch=10,
+                                  low_alch=5)
+        item2 = schemas.ItemCreate(id=0, name="Test Nothing", market=1, limit=5000, members=True, high_alch=10,
+                                   low_alch=5)
         db = db_session
 
         async with db as session:
             result = await crud.create_item(session, item)
+            await crud.update_item(session, item2)
 
         assert isinstance(result, models.Items), "result is not an Item type"
         assert result.id == 1, "Correct ID was not returned in query"
@@ -82,6 +86,7 @@ class TestDB:
     async def test_update_item(self, db_session):
         item = schemas.ItemCreate(id=1, name="Test Cannonball", market=1, limit=5000, members=True, high_alch=10,
                                   low_alch=5)
+
         db = db_session
 
         async with db as session:
