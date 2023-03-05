@@ -110,7 +110,7 @@ async def get_latest(db: AsyncSession, latest_id: int) -> models.Latest:
 
 
 async def get_latest_all(db: AsyncSession, limit: int = 100) -> list[models.Latest]:
-    stmt = select(models.Latest).distinct(models.Latest.item_id).order_by(models.Latest.time_stamp.desc()).limit(limit)
+    stmt = select(models.Latest).distinct(models.Latest.item_id).order_by(models.Latest.item_id.desc()).limit(limit)
     result = await db.execute(stmt)
     return result.scalars().all()
 
