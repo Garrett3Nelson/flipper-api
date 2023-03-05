@@ -43,7 +43,7 @@ class TestDB:
 
         async with db as session:
             result = await crud.create_item(session, item)
-            await crud.update_item(session, item2)
+            await crud.create_item(session, item2)
 
         assert isinstance(result, models.Items), "result is not an Item type"
         assert result.id == 1, "Correct ID was not returned in query"
