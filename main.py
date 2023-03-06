@@ -6,24 +6,6 @@ from sql.database import async_session, engine
 app = FastAPI()
 
 
-# # Dependency
-# async def get_db():
-#     db = async_session()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
-
-# @app.on_event("startup")
-# async def startup():
-#     await engine.connect()
-#
-#
-# @app.on_event("shutdown")
-# async def shutdown():
-#     await database.disconnect()
-
-
 @app.get('/')
 async def root():
     return {"message": "Hello World"}
@@ -45,6 +27,42 @@ async def read_latest(limit: int = 100):
 async def read_latest_by_item(item_id: int):
     async with async_session() as session:
         return await crud.get_latest_by_item(session, item_id=item_id)
+
+
+@app.post('/average/', response_model=schemas.Average)
+async def create_average(average: schemas.AverageCreate):
+    async with async_session() as session:
+        return await crud.create_average(session, average=average)
+
+
+@app.get('/average/', response_model=list[schemas.Average])
+async def read_average(limit: int = 100):
+    async with async_session() as session:
+        return await crud.get_average_all(session, limit=limit)
+
+
+@app.get('/average/{item_id}/', response_model=schemas.Average)
+async def read_average_by_item(item_id: int):
+    async with async_session() as session:
+        return await crud.get_average_by_item(session, item_id=item_id)
+
+
+@app.post('/daily/', response_model=schemas.Daily)
+async def create_average(daily: schemas.DailyCreate):
+    async with async_session() as session:
+        return await crud.create_daily(session, daily=daily)
+
+
+@app.get('/daily/', response_model=list[schemas.Daily])
+async def read_average(limit: int = 100):
+    async with async_session() as session:
+        return await crud.get_daily_all(session, limit=limit)
+
+
+@app.get('/daily/{item_id}/', response_model=schemas.Daily)
+async def read_average_by_item(item_id: int):
+    async with async_session() as session:
+        return await crud.get_daily_by_item(session, item_id=item_id)
 
 
 @app.get('/items/full/', response_model=list[schemas.ItemFull])
