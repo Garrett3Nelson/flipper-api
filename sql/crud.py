@@ -29,7 +29,7 @@ async def get_item(db: AsyncSession, item_id: int) -> models.Items:
 
 # Write get_items() to pull all items, with limit and filters
 async def get_items(db: AsyncSession, limit: int = 100) -> list[models.Items]:
-    stmt = select(models.Items).limit(limit)
+    stmt = select(models.Items).order_by(models.Items.id.asc()).limit(limit)
     result = await db.execute(stmt)
     return result.scalars().all()
 
