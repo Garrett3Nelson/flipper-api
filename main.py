@@ -48,19 +48,19 @@ async def read_average_by_item(item_id: int):
 
 
 @app.post('/daily/', response_model=schemas.Daily)
-async def create_average(daily: schemas.DailyCreate):
+async def create_daily(daily: schemas.DailyCreate):
     async with async_session() as session:
         return await crud.create_daily(session, daily=daily)
 
 
 @app.get('/daily/', response_model=list[schemas.Daily])
-async def read_average(limit: int = 100):
+async def read_daily(limit: int = 100):
     async with async_session() as session:
         return await crud.get_daily_all(session, limit=limit)
 
 
 @app.get('/daily/{item_id}/', response_model=schemas.Daily)
-async def read_average_by_item(item_id: int):
+async def read_daily_by_item(item_id: int):
     async with async_session() as session:
         return await crud.get_daily_by_item(session, item_id=item_id)
 
