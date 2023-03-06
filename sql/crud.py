@@ -143,6 +143,12 @@ async def get_average(db: AsyncSession, average_id: int) -> models.Average:
     return result
 
 
+async def get_average_all(db: AsyncSession, limit: int = 100) -> list[models.Average]:
+    stmt = select(models.Average).distinct(models.Average.item_id).order_by(models.Average.item_id.desc()).limit(limit)
+    result = await db.execute(stmt)
+    return result.scalars().all()
+
+
 async def get_average_by_item(db: AsyncSession, item_id: int) -> list[schemas.Average]:
     stmt = select(models.Items).filter(models.Items.id == item_id).options(selectinload(models.Items.average))
     result = await db.execute(stmt)
@@ -168,6 +174,12 @@ async def create_daily(db: AsyncSession, daily: schemas.DailyCreate) -> models.D
 async def get_daily(db: AsyncSession, daily_id: int) -> models.Daily:
     result = await db.get(models.Daily, daily_id)
     return result
+
+
+async def get_daily_all(db: AsyncSession, limit: int = 100) -> list[models.Daily]:
+    stmt = select(models.Daily).distinct(models.Daily.item_id).order_by(models.Daily.item_id.desc()).limit(limit)
+    result = await db.execute(stmt)
+    return result.scalars().all()
 
 
 async def get_daily_by_item(db: AsyncSession, item_id: int) -> list[schemas.Daily]:
