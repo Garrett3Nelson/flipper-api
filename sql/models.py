@@ -23,7 +23,7 @@ class Items(Base):
     average = relationship("Average", back_populates='item', cascade="all, delete, delete-orphan")
     daily = relationship("Daily", back_populates='item', cascade="all, delete, delete-orphan")
     production = relationship("Production", back_populates='item', cascade="all, delete, delete-orphan")
-    materials = relationship("Material", back_populates='item', cascade="all, delete, delete-orphan")
+    materials = relationship("Material", back_populates='item')
 
     # indices = relationship("TradeIndex", back_populates='item')
 
@@ -129,8 +129,8 @@ class Production(Base):
     updated = Column(DateTime, nullable=False, default=datetime.datetime.utcnow(), onupdate=datetime.datetime.utcnow())
 
     item = relationship('Items', back_populates='production')
-    materials = relationship('Material', back_populates='production')
-    skills = relationship('Skill', back_populates='production')
+    materials = relationship('Material', back_populates='production', cascade="all, delete, delete-orphan")
+    skills = relationship('Skill', back_populates='production', cascade="all, delete, delete-orphan")
 
     __mapper_args__ = {"eager_defaults": True}
 

@@ -208,9 +208,6 @@ class TestDB:
         assert result[1].item_id == 0, 'Result has the incorrect item ID'
         assert result[1].low_price == 1, 'Result does not have correct price'
 
-        async with db as session:
-            await crud.delete_latest(session, result[1].id)
-
     async def test_get_latest_by_item(self, db_session):
         db = db_session
         async with db as session:
@@ -332,4 +329,19 @@ class TestDB:
             result = await crud.get_items(session, limit=100)
 
         assert isinstance(result, list), "result is not an Item type"
-        assert result[0].id == 1, "Correct ID was not returned in query"
+        assert result[0].id == 0, "Correct ID was not returned in query"
+
+    async def test_delete_data(self, db_session):
+        db = db_session
+
+        # Cleanup after tests are complete
+        async with db as session:
+            await crud.delete_item(session, item_id=0)
+            await crud.delete_item(session, item_id=1)
+            await crud.delete_production(session, production_id=1)
+
+            item = await crud.get_item(session, item_id=1)
+            prod = await crud.get_production(session, production_id=1)
+
+        assert item is None, "Item still exists"
+        assert prod is None, "Production still exists"
